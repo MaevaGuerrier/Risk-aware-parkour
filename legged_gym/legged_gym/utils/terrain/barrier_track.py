@@ -757,9 +757,9 @@ class BarrierTrack:
 
         # compute whether the robot is engaging with the next block
         engaging_obstacle_depth = self.track_info_map[
-            track_idx_clipped[:, 0],
-            track_idx_clipped[:, 1],
-            block_idx_clipped,
+            track_idx_clipped[:, 0].long(),
+            track_idx_clipped[:, 1].long(),
+            block_idx_clipped.long(),
             1,
         ] # (n,)
         in_block_distance = forward_distance % self.env_block_length
@@ -785,9 +785,9 @@ class BarrierTrack:
         engaging_distance = track_idx_selection[:, 0] * self.env_length + block_idx_selection * self.env_block_length + self.cfg.border_size
         engaging_distance = engaging_distance - base_positions[:, 0]
         engaging_block_info = self.track_info_map[
-            track_idx_selection[:, 0],
-            track_idx_selection[:, 1],
-            block_idx_selection,
+            track_idx_selection[:, 0].long(),
+            track_idx_selection[:, 1].long(),
+            block_idx_selection.long(),
             1:
         ]
         engaging_obstacle_onehot = torch.zeros(
@@ -796,9 +796,9 @@ class BarrierTrack:
             device= self.device,
         ) # (n, n_obstacle + 1)
         obstacle_id_selection = self.track_info_map[
-            track_idx_selection[:, 0],
-            track_idx_selection[:, 1],
-            block_idx_selection,
+            track_idx_selection[:, 0].long(),
+            track_idx_selection[:, 1].long(),
+            block_idx_selection.long(),
             0
         ].to(int)
         if self.track_kwargs.get("walk_in_skill_gap", False):
